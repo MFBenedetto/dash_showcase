@@ -5,8 +5,7 @@ nav = create_navbar()
 
 header = html.H3('SUMMARY')
 
-
-def create_summary():
+def create_summary_page():
     layout = html.Div([
         nav,
         header,
