@@ -12,7 +12,7 @@ def create_navbar():
                                 # Use row and col to control vertical alignment of logo / brand
                                 dbc.Row(
                                     [
-                                        dbc.Col(["powered by", html.Br(), html.Img(src=LOGO, height="35px"), html.Br(), "Polynoes"], className="ms-2",
+                                        dbc.Col(["made by", html.Br(), html.Img(src=LOGO, height="35px"), html.Br(), "Polynoes"], className="ms-2",
                                         style = {'color': 'white', 'font-size': '10px'}),
                                     ],
                                     align="right",
@@ -22,14 +22,14 @@ def create_navbar():
                                 style={"textDecoration": "none"},
                             ),
                             dbc.NavItem(dbc.NavLink("Home", href='/')),
-                            dbc.NavItem(dbc.NavLink("Upload", href='/upload')),
+                            dbc.NavItem(dbc.NavLink("Data", href="/data")),
                             dbc.NavItem(dbc.NavLink("Summary", href='/summary')),
-                            dbc.NavItem(dbc.NavLink("Raw data", href="/data")),
-                            dbc.NavItem(dbc.NavLink("Page 3", href='/page-3')),
+                            dbc.NavItem(dbc.NavLink("Product analytics", href='/product')),
+                            dbc.NavItem(dbc.NavLink("Business Intelligence", href='/business')),
                         ]
                 ),
                 color="grey",
                 dark=True,
-                style={'margin-top':'0px', 'width': '100%', 'float': 'right', 'font-size': '25px'},
+                style={'margin-top':'0px', 'width': '100%', 'float': 'right', 'font-size': '20px'},
             )
     return navbar

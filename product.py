@@ -3,10 +3,9 @@ from navbar import create_navbar
 
 nav = create_navbar()
 
-header = html.H3('Welcome to page 3!')
+header = html.H3('PRODUCT')
 
-
-def create_page_3():
+def create_product_page():
     layout = html.Div([
         nav,
         header,

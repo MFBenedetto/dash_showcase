@@ -9,7 +9,7 @@ import pandas as pd
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-def create_upload_page():
+def create_load_page():
     layout = html.Div([
         dcc.Upload(
             id='upload-data',
