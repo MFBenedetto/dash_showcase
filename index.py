@@ -13,11 +13,8 @@ from business import create_business_page
 
 import pandas as pd
 
-# The full list of available themes is:
-# https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.LUX])
 server = app.server
-
  
 server = app.server
 app.config.suppress_callback_exceptions = True
