@@ -28,7 +28,7 @@ def create_navbar():
                             dbc.NavItem(dbc.NavLink("Business Intelligence", href='/business'), style = {'color': 'black', 'font-size': '24px', 'font-weight': 'bold'}),
                         ]
                 ),
-                color="lightgray",
+                color="gray",
                 dark=True,
                 style={'margin-top':'0px', 'width': '100%', 'float': 'right', 'font-size': '20px'},
             )

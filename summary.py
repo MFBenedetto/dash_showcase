@@ -1,3 +1,4 @@
+from email.quoprimime import header_check
 from tkinter import X
 import dash
 import dash_bootstrap_components as dbc
@@ -123,6 +124,8 @@ fig3 = dict(
         )
 
 nav = create_navbar()
+header = html.H1("Summary", style={'textAlign': 'center'})
+
 
 def create_summary_page():
     layout = html.Div([
@@ -132,7 +135,7 @@ def create_summary_page():
                                 start_date=date(2022, 1, 1),
                                 end_date= date(2022, 3, 31), style={'textAlign': 'center'}),
                                 width={'size': 4, 'offset':1}),
-            html.H1("SUMMARY", style={'textAlign': 'center'}),
+            header,
             dbc.Row([dbc.Col(dcc.Graph(id='m1', figure=m1),
                         id='fig1',
                         width={'size': 3,  "offset": 0, 'order': 1}),

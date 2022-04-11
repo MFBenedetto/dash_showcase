@@ -4,7 +4,7 @@ import pandas as pd
 from dash import dash_table, dcc, html
 import dash_bootstrap_components as dbc
 from navbar import create_navbar
-
+from utils import get_emptyrow
 
 def create_data_page():
     
@@ -15,7 +15,7 @@ def create_data_page():
         df = pd.read_csv('data/data.csv')
 
         layout = html.Div([create_navbar(),
-                            dbc.Row(),
+                            get_emptyrow(h=30),
                             html.H1(children="Upload and inspect data",style={'color':'#00361c','text-align':'center'}),
                             dbc.Row([dbc.Col(html.Div(), width=3),
                                      dbc.Col(html.Div(dash_table.DataTable(
