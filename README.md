@@ -1,6 +1,9 @@
-# Plotly-Dash-Pages-Template
-A template for creating a Plotly Dash dashboard with multiple pages using Bootstrap CSS.  
+# POLYNOES
+## Business dashboard
 
-To run the dashboard, clone the repo and run index.py
+### Explore your data
+* with instant deployment
+* automatic, interactive plots
+* generate reports
+* download and save
 
-In the terminal, you will see a prompt indicating that Dash is running on your local server.  Copy the URL and paste it into your browser. 
