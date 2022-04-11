@@ -4,22 +4,24 @@ import io
 from dash import dcc, html, Dash
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
+import pandas as pd
 
 from home import create_home_page
 from data import create_data_page
 from summary import create_summary_page
 from product import create_product_page
 from business import create_business_page
+from config.USERS import USERNAME_PASSWORD_PAIRS
 
-import pandas as pd
-
-# The full list of available themes is:
-# https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.LUX])
 server = app.server
-
  
-server = app.server
+# import dash_auth
+# auth = dash_auth.BasicAuth(
+#     app,
+#     USERNAME_PASSWORD_PAIRS
+# )
+
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
