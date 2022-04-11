@@ -11,7 +11,9 @@ from data import create_data_page
 from summary import create_summary_page
 from product import create_product_page
 from business import create_business_page
+from reporting import create_reporting_page
 from config.USERS import USERNAME_PASSWORD_PAIRS
+
 
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.LUX])
 server = app.server
@@ -41,6 +43,8 @@ def display_page(pathname):
         return create_product_page()
     if pathname == '/business':
         return create_business_page()
+    if pathname == '/reporting':
+        return create_reporting_page()
     else:
         return create_home_page()
 
