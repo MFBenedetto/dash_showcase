@@ -1,5 +1,7 @@
 import base64
 import io
+import matplotlib
+matplotlib.use('Agg')
 
 from dash import dcc, html, Dash
 from dash.dependencies import Input, Output, State

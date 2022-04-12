@@ -12,7 +12,7 @@ def create_navbar():
                                 # Use row and col to control vertical alignment of logo / brand
                                 dbc.Row(
                                     [
-                                        dbc.Col(["made by",html.Br(), html.Img(src=LOGO, height="35px"), html.Br(), "Polynoes"], className="ms-2",
+                                        dbc.Col(["made by",html.Br(), html.Img(src=LOGO, height="30px"), html.Br(), "Polynoes"], className="ms-2",
                                         style = {'color': 'white', 'font-size': '10px'}),
                                     ],
                                     align="right",
