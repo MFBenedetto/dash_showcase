@@ -1,83 +1,92 @@
+import dash
+import dash_table
+import pandas as pd
+import dash_core_components as dash_core
+import dash_html_components as dash_html
+from dash.dependencies import Input, Output
 import base64
-import datetime
 import io
 
-from dash.dependencies import Input, Output, State
-from dash import dcc, html, dash_table
+# starting app layout
+app.layout = dash_html.Div([
+    # upload button to take csv files
+    dash_core.Upload(id='upload_data',
+               children=dash_html.Div(['Drag and Drop or ',
+                                  dash_html.A('Select Files')
+                                  ]),
+               style={'width': '100%',
+                      'height': '60px',
+                      'lineHeight': '60px',
+                      'borderWidth': '1px',
+                      'borderStyle': 'dashed',
+                      'borderRadius': '5px',
+                      'textAlign': 'center',
+                      'margin': '10px'
+                      },
+               multiple=False),
+    # Div to store json serialized dataframe
+    dash_html.Div(id='json_df_store', style={'display':'none'}),
+    # a 'Div' to return table output to
+    dash_html.Div(id='dataframe_output'),
+])
 
-import pandas as pd
+@app.callback(Output('json_df_store', 'children'),
+              [Input('upload_data', 'contents'),
+               Input('upload_data', 'filename')])
+def load_df(content, filename):
+    if content:
+        # Modify the read_csv callback part
+        content_type, content_string = contents.split(',')
+        decoded = base64.b64decode(content_string)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+        try:
+            if 'csv' in filename:
 
-def create_load_page():
-    layout = html.Div([
-        dcc.Upload(
-            id='upload-data',
-            children=html.Div([
-                'Drag and Drop or ',
-                html.A('Select Files')
-            ]),
-            style={
-                'width': '100%',
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '1px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '10px'
-            },
-            # Allow multiple files to be uploaded
-            multiple=True
-        ),
-        html.Div(id='output-data-upload'),
-    ])
-    return layout
+                # Assume that the user uploaded a CSV file
+                input_data  = pd.read_csv(io.StringIO(decoded.decode('utf-8')))
 
-def parse_contents(contents, filename, date): 
-    content_type, content_string = contents.split(',')
+                info_dataframe = pd.DataFrame(data={
+                                              "data_types": input_data.dtypes,
+                                              "blanks_count": input_data.isna().sum(),
+                                              "unique_count": input_data.nunique()
+                                                   })
 
-    decoded = base64.b64decode(content_string)
-    try:
-        if 'csv' in filename:
-            # Assume that the user uploaded a CSV file
-            df = pd.read_csv(
-                io.StringIO(decoded.decode('utf-8')))
-        elif 'xls' in filename:
-            # Assume that the user uploaded an excel file
-            df = pd.read_excel(io.BytesIO(decoded))
-    except Exception as e:
-        print(e)
-        return html.Div([
-            'There was an error processing this file.'
-        ])
+                # adding index as a row
+                info_dataframe.reset_index(level=0, inplace=True)
+                info_dataframe.rename(columns={'index':'col_name'}, inplace=True)
 
-    return html.Div([
-        html.H5(filename),
-        html.H6(datetime.datetime.fromtimestamp(date)),
+                info_dataframe['data_types'] = info_dataframe['data_types'].astype(str)
 
-        dash_table.DataTable(
-            df.to_dict('records'),
-            [{'name': i, 'id': i} for i in df.columns]
-        ),
+                return info_dataframe.to_json(date_format='iso', orient='split')
 
-        html.Hr(),  # horizontal line
+        except Exception as e:
+            #print(e)
+            return pd.DataFrame(data={'Error': e}, index=[0]).to_json(date_format='iso', orient='split')
 
-        # For debugging, display the raw contents provided by the web browser
-        html.Div('Raw Content'),
-        html.Pre(contents[0:200] + '...', style={
-            'whiteSpace': 'pre-wrap',
-            'wordBreak': 'break-all'
-        })
-    ])
 
-@app.callback(Output('output-data-upload', 'children'),
-              Input('upload-data', 'contents'),
-              State('upload-data', 'filename'),
-              State('upload-data', 'last_modified'))
-def update_output(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is not None:
-        children = [
-            parse_contents(c, n, d) for c, n, d in
-            zip(list_of_contents, list_of_names, list_of_dates)]
-        return children
+
+# callback to take and output the uploaded file
+@app.callback(Output('dataframe_output', 'children'),
+              [Input('json_df_store', 'children')])
+def update_output(json_df):
+
+   info_dataframe = pd.read_json(json_df, orient='split')
+
+   data = info_dataframe .to_dict("rows")
+   cols = [{"name": i, "id": i} for i in info_dataframe .columns]
+
+   child = dash_html.Div([
+                dash_table.DataTable(
+                                id='table',
+                                data=data, 
+                                columns=cols,
+                                style_cell={'width': '50px',
+                                            'height': '30px',
+                                            'textAlign': 'left'}
+                                      )
+                           ])
+    return child
+
+# running the app now
+if __name__ == '__main__':
+    app.run_server(debug=True, port=8050)

@@ -1,6 +1,6 @@
 from dash import html, callback
 from navbar import create_navbar
-from dash import callback, dcc, html, Input, Output
+from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
@@ -8,25 +8,20 @@ from utils import get_emptyrow
 import numpy as np
 import plotly.express as px
 import plotly.figure_factory as ff
-import plotly.graph_objects as go
 
 nav = create_navbar()
 
 header = html.H1("Business Intelligence", style={'textAlign': 'center'})
 
-dfGDP = pd.read_csv('data/GDPdata.csv')
-dfGDP = dfGDP.rename(columns={'gdpPercap': 'Sales', 'lifeExp': 'Revenue'})
+dfGDP = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
 
-heatmap = go.Figure(data=go.Heatmap(
-                    z=dfGDP['Sales'],
-                    y=dfGDP['year'],
-                    x=dfGDP['country'],
-                    colorscale='Turbo'))
-heatmap.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+dfGDP = dfGDP.rename(columns={'gdpPercap': 'Sales', 'lifeExp': 'Revenue'})
 
 df = px.data.tips()
 df['customer'] = df['sex'].replace({'Female': 'Normal', 'Male': 'Premium'})
 df['Bill'] = df['total_bill']
+
+
 
 @callback(
     Output("graph1", "figure"), 
@@ -35,41 +30,10 @@ def display_graph(distribution):
     fig1 = px.histogram(df, x="Bill", y="Bill", color="customer", marginal=distribution,
                     hover_data=df.columns)
 
-    fig1.update_layout(margin=dict(l=0, r=0, t=0, b=0))
+    fig1.update_layout(height=400, 
+                    margin=dict(l=0, r=0, t=0, b=0))
 
     return fig1
-
-tabs_styles = {
-    'height': '44px'
-}
-tab_style = {
-    'borderBottom': '1px solid #d6d6d6',
-    'padding': '6px',
-    'fontWeight': 'bold'
-}
-
-tab_selected_style = {
-    'borderTop': '1px solid #d6d6d6',
-    'borderBottom': '1px solid #d6d6d6',
-    'backgroundColor': '#119DFF',
-    'color': 'white',
-    'padding': '6px'
-}
-
-tab_layout = html.Div([
-            dbc.Row([
-            dbc.Col(html.Div([
-                    dcc.Tabs(id="tabs", value='tab-1', children=[
-                            dcc.Tab(label='Revenue History', value='tab-1', style=tab_style, selected_style=tab_selected_style),
-                            dcc.Tab(label='Revenue Heatmap', value='tab-2', style=tab_style, selected_style=tab_selected_style),
-                            dcc.Tab(label='Distribution', value='tab-3', style=tab_style, selected_style=tab_selected_style),
-                            dcc.Tab(label='Timeline', value='tab-4', style=tab_style, selected_style=tab_selected_style),
-                        ], style=tabs_styles),
-                        get_emptyrow(h=10),
-                        html.Div(id='tabs-content')
-                ]), width=10)
-            ], justify="center", align='start') #end row
-        ])#end div
 
 
 # Add histogram data
@@ -123,17 +87,9 @@ fig3 = dict(
             )
         )
 
-def get_heatmap_plot():
-    return html.Center([
-                html.H3('Revenue (in Millions of USD) from sales'),
-                        dcc.Graph(figure=heatmap,
-                                style = {'textAlign': 'center'}),
-                ])
-
 
 def get_GDP_plot():
-    return html.Center([
-                html.H3('Revenue (in Millions of USD) from sales'),
+    return html.Center(
                 dbc.Col( 
                 [
                         dcc.Graph(id='graph-with-slider', 
@@ -146,18 +102,9 @@ def get_GDP_plot():
                             marks={str(year): str(year) for year in dfGDP['year'].unique()},
                             id='year-slider')
                     ],
+                    width={'size': 6, 'offset':0},
                     style = {'text-align':'center'})
-                ])
-
-def get_timeline_plot():
-        return [dbc.Row([dbc.Col(html.H3("Market share timeline"),
-                        width={'size': 'auto', 'offset': 0}
-                        )],justify="center", align="center"
-                ),
-                dbc.Row([dbc.Col(dcc.Graph(id='graph3', figure=fig3),
-                    style={'height': 10},
-                    id='fig1')
-                ],justify="evenly", align="start")]
+                )
 
 @callback(
     Output('graph-with-slider', 'figure'),
@@ -167,52 +114,47 @@ def update_figure(selected_year):
 
     fig = px.scatter(filtered_df, x="Sales", y="Revenue",
                      size="pop", color="continent", hover_name="country",
-                     log_x=True, size_max=55)
+                     log_x=True, size_max=55, title = 'Revenue (in Millions of USD) from sales')
+
     fig.update_layout(transition_duration=50)
     return fig
-
-
-def get_dist_plots():
-    return [dbc.Row([dbc.Col(html.H3("Client expenditure"),
-                    width={'size': 6, 'offset':0},
-                    style = {'text-align':'center'}),
-                dbc.Col(html.H3("Client tenure distribution"),
-                    width={'size': 6, 'offset':0},
-                    style = {'text-align':'center'})],
-                justify="evenly", align="center"),
-                dbc.Row([dbc.Col([
-                    dcc.RadioItems(
-                        id='distribution',
-                        options=[' Box ', ' Violin ', ' Rug '],
-                        value='box', inline=True
-                    ),
-                    dcc.Graph(id='graph1')],
-                        width={'size': 6,  "offset": 0, 'order': 'first'}),
-                dbc.Col(dcc.Graph(id='graph2', figure=fig2),
-                            width={'size': 6,  "offset": 0, 'order': 'last'})
-        ], justify="evenly", align='center')]
-
-@callback(Output('tabs-content', 'children'),
-              [Input('tabs', 'value')])
-def render_content(tab):
-    if tab == 'tab-1':
-        return get_GDP_plot()
-    if tab == 'tab-2':
-        return get_heatmap_plot()
-    elif tab == 'tab-3':
-       return get_dist_plots()
-    elif tab == 'tab-4':
-       return get_timeline_plot()
-
 
 def create_business_page():
     layout = [
         nav,
         get_emptyrow(h=30),
         header,
-        get_emptyrow(h=10),
-        tab_layout,
+        get_GDP_plot(),
+        html.Hr(),
+        dbc.Row([dbc.Col(html.H2("Client expenditure"),
+                    width={'size': 5, 'offset':0},
+                    style = {'text-align':'center'}),
+                dbc.Col(html.H2("Client tenure distribution"),
+                    width={'size': 5, 'offset':0},
+                    style = {'text-align':'center'})],
+                justify="evenly", align="center"),
+        dbc.Row([dbc.Col([
+                    dcc.RadioItems(
+                        id='distribution',
+                        options=[' Box ', ' Violin ', ' Rug '],
+                        value='box', inline=True
+                    ),
+                    dcc.Graph(id='graph1')],
+                        width={'size': 5,  "offset": 0, 'order': 'first'}),
+                dbc.Col(dcc.Graph(id='graph2', figure=fig2),
+                        width={'size': 5,  "offset": 0, 'order': 'last'})
+        ], justify="evenly", align='center'),
+        html.Hr(),
+        dbc.Row([dbc.Col(html.H2("Market share timeline"),
+                        width={'size': 'auto', 'offset': 0}
+                        )],justify="center", align="center"
+                ),
+        dbc.Row([dbc.Col(dcc.Graph(id='graph3', figure=fig3),
+                    style={'height': 10},
+                    id='fig1',
+                    width={'size': 10,  "offset": 0, 'order': 'first'})
+        ],justify="evenly", align="start")
     ]
-    
     return layout
 
+    

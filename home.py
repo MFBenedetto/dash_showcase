@@ -6,8 +6,6 @@ nav = create_navbar()
 
 def create_home_page():
 
-
-
     layout = html.Div( children = [nav,
                     get_emptyrow(h=30),
                     html.H1('Data and analytics dashboard', style={'textAlign': 'center'}),
