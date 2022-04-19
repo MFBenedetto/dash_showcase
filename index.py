@@ -15,7 +15,7 @@ from reporting import create_reporting_page
 from config.USERS import USERNAME_PASSWORD_PAIRS
 
 
-app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.LUX])
+app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.LUX], update_title='Loading...')
 server = app.server
  
 # import dash_auth
@@ -28,10 +28,11 @@ app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
+    html.Div(id='page-content'),
+    html.Div(id='blank-output')
 ])
 
-
+app.title = 'Data and analytics dashboard - HOME'
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
@@ -47,6 +48,7 @@ def display_page(pathname):
         return create_reporting_page()
     else:
         return create_home_page()
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

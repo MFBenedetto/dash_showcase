@@ -23,7 +23,7 @@ def create_navbar():
                             ),
                             dbc.NavItem(dbc.NavLink("Home", href='/'), style = {'color': 'black', 'font-weight': 'bold'}),
                             dbc.NavItem(dbc.NavLink("Data", href="/data"), style = {'color': 'black', 'font-weight': 'bold'}),
-                            dbc.NavItem(dbc.NavLink("Summary", href='/summary'), style = {'color': 'black', 'font-weight': 'bolder'}),
+                            dbc.NavItem(dbc.NavLink("Summary", href='/summary'), style = {'color': 'black', 'font-weight': 'bold'}),
                             dbc.NavItem(dbc.NavLink("Business Intelligence", href='/business'), style = {'color': 'black', 'font-weight': 'bold'}),
                             dbc.NavItem(dbc.NavLink("Machine Learning - AI", href='/ML'), style = {'color': 'black', 'font-weight': 'bold'}),
                             dbc.NavItem(dbc.NavLink("Reporting", href='/reporting'), style = {'color': 'black',  'font-weight': 'bold'}),
