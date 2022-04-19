@@ -6,7 +6,6 @@ import plotly.express as px
 import pandas as pd
 from utils import get_emptyrow
 import numpy as np
-import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 

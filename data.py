@@ -1,19 +1,11 @@
 import os
 import pandas as pd
-import base64
 import plotly.express as px
 from dash import dash_table, dcc, html, callback
 import dash_bootstrap_components as dbc
 from navbar import create_navbar
 from utils import get_emptyrow
 from dash.dependencies import Input, Output
-
-import base64
-import io
-
-import pandas as pd
-from dash.dependencies import Input, Output
-from utils import get_emptyrow
 
 PATH = 'data' 
 DATA = pd.read_csv(os.path.join(PATH, 'empty.csv'))

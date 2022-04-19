@@ -1,4 +1,3 @@
-from tkinter import X
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 from dash import html, dcc
