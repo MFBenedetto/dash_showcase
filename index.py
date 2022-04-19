@@ -1,10 +1,10 @@
-import base64
-import io
-
 from dash import dcc, html, Dash
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-import pandas as pd
+
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
 
 from home import create_home_page
 from data import create_data_page
