@@ -84,6 +84,8 @@ def create_ML_page():
                 header,
                 get_emptyrow(h=20),
                 subheader,
+                get_emptyrow(h=20),
+                subsubheader,
                 dbc.Row([
                     dbc.Col(
                         [
@@ -98,11 +100,11 @@ def create_ML_page():
                                 fill_width=False
                             ),
                             html.Button(id='submit', children=['Submit'])
-                        ], width=1, align='center'),
+                        ], width=2, align='center'),
                         dbc.Col(
                             dcc.Graph(id='graph'),
-                        width=9, align='center')
-                ],justify='center'),
+                        width=8, align='center')
+                ], justify='center'),
             ]
         )
 

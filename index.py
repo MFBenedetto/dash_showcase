@@ -24,7 +24,7 @@ app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content'),
+    html.Div(id='page-content'), 
     html.Div(id='blank-output')
 ])
 
@@ -42,8 +42,6 @@ def display_page(pathname):
         return create_business_page()
     if pathname == '/reporting':
         return create_reporting_page()
-    else:
-        return create_home_page()
     return create_home_page()
 
 if __name__ == '__main__':

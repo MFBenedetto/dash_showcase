@@ -7,6 +7,7 @@ from navbar import create_navbar
 from utils import get_emptyrow
 from dash.dependencies import Input, Output
 
+
 PATH = 'data' 
 DATA = pd.read_csv(os.path.join(PATH, 'empty.csv'))
 

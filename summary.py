@@ -63,7 +63,6 @@ m3.update_layout(
     margin=dict(t=0,b=0,l=0,r=0),
     height = 160
     )
-m3.update_xaxes(range=[X[0], X[-1]])
 
 Y = [325, 324, 405, 400, 424, 404, 417, 432, 419, 394, 410, 426, 413,419, 404, 408, 401, 377, 368, 361, 356, 359, 375,
      397, 394, 418, 437, 450, 430, 442, 424, 443, 420, 418, 423, 423, 426, 440, 437, 436, 447, 460, 478, 472, 450, 456,
@@ -80,8 +79,6 @@ m4.add_trace(go.Scatter(
     x = pd.date_range(start=d_start,end=d_end+datetime.timedelta(days=5)),
     y = Y)
     )
-
-
 
 m4.update_layout(
     font= {'size':16},
@@ -185,7 +182,7 @@ def create_summary_page():
                     ),
             ],
             style={
-            'margin-b': 0
+            'margin-b': 10
             })
     return layout
     

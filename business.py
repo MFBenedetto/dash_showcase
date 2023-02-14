@@ -31,7 +31,7 @@ df['Bill'] = df['total_bill']
     Output("graph1", "figure"), 
     Input("distribution", "value"))
 def display_graph(distribution):
-    fig1 = px.histogram(df, x="Bill", y="Bill", color="customer", marginal=distribution,
+    fig1 = px.histogram(df, x="Bill", y="Bill", color="customer", marginal=distribution.lower().strip(),
                     hover_data=df.columns)
 
     fig1.update_layout(margin=dict(l=0, r=0, t=0, b=0))
@@ -182,7 +182,7 @@ def get_dist_plots():
                 dbc.Row([dbc.Col([
                     dcc.RadioItems(
                         id='distribution',
-                        options=[' Box ', ' Violin ', ' Rug '],
+                        options=[' Box ', 'Violin ', ' Rug '],
                         value='box', inline=True
                     ),
                     dcc.Graph(id='graph1')],
