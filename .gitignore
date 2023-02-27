@@ -2,3 +2,4 @@ dash_showcase_env/
 .idea
 __pycache__
 update_date.sh
+log.txt
